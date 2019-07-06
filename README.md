@@ -21,24 +21,24 @@ Berikut adalah fungsi-fungsi yang diperlukan untuk algoritma hashing ini, antara
   3. putData, yaitu menyusun data ke dalam hash table, berdasarkan nilai hash yang dihasilkan
   4. searchHash, argumen merupakan data yang dicari, dan nilai balik berupa True or False, yaitu apakah data ditemukan di dalam hash table
 
-      def remainderFunction (data,num):
-          return (data%num)
-      def createHashTable(num):
-          temp=[]
-          for i in range(num):
-              temp.append('none')
-          return(temp)
-      def putData(data,table):
-          for i in range(len(data)):
-              ind=remainderFunction(data[i],len(table))  
-              table[ind]=data[i]
-          return(table)
-      def searchHash(data,table):
-          hashVal=remainderFunction(data,len(table))
-          if data==table[hashVal]:
-              return True
-          else:
-              return False
+         def remainderFunction (data,num):
+             return (data%num)
+         def createHashTable(num):
+             temp=[]
+             for i in range(num):
+                 temp.append('none')
+             return(temp)
+         def putData(data,table):
+             for i in range(len(data)):
+                 ind=remainderFunction(data[i],len(table))  
+                 table[ind]=data[i]
+             return(table)
+         def searchHash(data,table):
+             hashVal=remainderFunction(data,len(table))
+             if data==table[hashVal]:
+                 return True
+             else:
+                 return False
               
 Berikut adalah contoh data dan pencarian dengan menggunakan konsep hashing
 
@@ -111,7 +111,7 @@ sehingga a= [54, 26, 93, 17, 77, 31, 44, 55, 20]
 
 
 
-Soal Praktikum
+# Soal Praktikum
 
 Buatlah fungsi-fungsi yang diperlukan dalam pencarian berdasarkan menggunakan konsep hashing, dan penanganan collusion dengan chaining.
 Fungsi-fungsi tersebut antara lain :
@@ -122,8 +122,8 @@ Fungsi-fungsi tersebut antara lain :
    Contoh berikut adalah eksekusi reminderfunction dengan argument data berupa 55, dan bilangan modulo adalah 10,
    sehingga output yang dihasilkan adalah 55 % 10 = 5
    
-    slot=remainderFuncition(55,10)
-    print(slot)
+       slot=remainderFuncition(55,10)
+       print(slot)
 5
 
 2. create Hash Table, yaitu fungsi pembuatan hash table. Gunakan list 2D pada pembuatan hash table ini, karena dibutuhkan untuk
@@ -131,4 +131,62 @@ Fungsi-fungsi tersebut antara lain :
    berupa Hash table yang telah terbentuk (berupa list 2D, dengan nilai default adalah [None]
    Berikut adalah inisialisasi hash table dengan ukuran 11 
 
+         hashTable=createHashTable(11)
+         print(hashTable)
+         --------------------------------------------
+         [[None], [None], [None], [None], [None], [None], [None], [None], [None], [None], [None], [None]]
 
+3. chaining, yaitu fungsi penempatan sejumlah data pada hash table yang telah dibuat. Fungsi chaining ini memiliki argument berupa list    data (kumpulan data) yang akan ditempatkan pada hash table, dan hash table yang telah dibuat sebelumnya. Penempatan data yang dibuat    berdasarkan metode chaining untuk penanganan collusion. Jika suatu data memiliki nilai hash yang sama (berdasarkan fungsi hash,          gunakan remainder function yang telah dibuat), maka data ditempatkan pada slot yang sama, akan tetapi pada indeks yang berbeda.
+
+4. searchHash, yaitu fungsi pencarian berdasarkan fungsi hash yang telah dibuat sebelumnya. Argumen adalah data yang akan dicari dan        hash table yang telah dibuat sebelumnya. Return value adalah False (jika data tidak ada), atau Nomor slot dan indeks jika data ada.
+
+
+# Jawaban Praktikum
+
+      def hash_table(size): 
+         hashtable = [] 
+         for i in range(size):
+            hast2D = []
+            hashtable.append(hast2D)
+            hast2D.append(None)
+         return hashtable
+
+      def remainder(data,num):
+         a = data % num
+         return a
+
+      def PutData (data,Table):
+         for i in data:
+            slot = remainder(i,len(Table))
+            Table[slot] = i
+
+      def searchHash(data,hash_table):
+         slot = remainder(data,len(hash_table))
+         index = 0
+         for i in hash_table[slot]:	
+            if i == data:
+               return 'data berada di slot ke-',slot,'dan indeks ke-',index
+            index +=1
+         else:
+            return False
+
+      def chaining(data,Table):
+         temp = []
+         for i in range(len(Table)):
+            Table[i] = []		
+         for i in data:
+            slot = remainder(i,len(Table))
+            if Table[slot] != None:
+               Table[slot].append(i)
+         for i in range(len(Table)):
+            if Table[i] == []:
+               Table[i] = [None]
+
+      hashtable = hash_table(11)
+      print(hashtable)
+      lis = [54,26,93,17,77,31,44,55,20]
+      slot = remainder(55,10)
+      print(slot)
+      #chinging(lis,hashtable)
+      print(hashtable)
+      print(searchHash(77,hashtable))
